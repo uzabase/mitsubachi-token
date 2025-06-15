@@ -1,0 +1,29 @@
+{
+  "name": "@sp-design/token",
+  "version": "9.0.1",
+  "description": "SPEEDA Design system tokens",
+  "main": "lib",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm i -D typescript && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/uzabase/sp-design-token.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "Hazuki Okuda,Tsunaki Okubo",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/uzabase/sp-design-token#readme",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "yakuhanjp": "^4.1.1"
+  }
+}
