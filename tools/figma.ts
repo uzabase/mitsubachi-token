@@ -114,15 +114,6 @@ function toHexValue(color: Color) {
   return hex;
 }
 
-function findVariableCollectionByName(
-  name: string,
-  variableCollections: VariableCollections
-) {
-  return Object.values(variableCollections).find(
-    (collection) => collection.name === name
-  );
-}
-
 function findLocalVariableCollectionByName(
   name: string,
   variableCollections: VariableCollections
