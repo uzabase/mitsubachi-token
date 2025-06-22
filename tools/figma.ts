@@ -123,6 +123,15 @@ function findVariableCollectionByName(
   );
 }
 
+function findLocalVariableCollectionByName(
+  name: string,
+  variableCollections: VariableCollections
+) {
+  return Object.values(variableCollections)
+    .filter((collection) => !collection.remote)
+    .find((collection) => collection.name === name);
+}
+
 function findVariableById(id: string, variables: Variables) {
   return Object.values(variables).find((variable) => variable.id === id);
 }
@@ -167,13 +176,13 @@ const main = async () => {
     SEMANTIC_FIGMA_FILE_KEY
   );
 
-  const uiPrimitiveColorCollection = findVariableCollectionByName(
+  const uiPrimitiveColorCollection = findLocalVariableCollectionByName(
     "UI Primitive Color",
     primitiveLocalVariables.variableCollections
   );
 
-  const semanticColorCollection = findVariableCollectionByName(
-    "Semantic Color",
+  const semanticColorCollection = findLocalVariableCollectionByName(
+    "UI Semantic Color",
     semanticLocalVariables.variableCollections
   );
 
@@ -225,9 +234,13 @@ const main = async () => {
       };
     });
 
-  const colorContent = JSON.stringify({
-    color: toColorTree(primitiveColorTokens.concat(semanticColorTokens)),
-  });
+  const colorContent = JSON.stringify(
+    {
+      color: toColorTree(primitiveColorTokens.concat(semanticColorTokens)),
+    },
+    undefined,
+    2
+  );
 
   const outputDir = path.resolve(__dirname, "tokens/color");
   if (!fs.existsSync(outputDir)) {

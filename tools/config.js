@@ -6,7 +6,7 @@ module.exports = {
         "\n// Do not edit directly\n// Generated on " +
         new Date().toUTCString() +
         "\n\n" +
-        "export const spTokenTypes = [\n" +
+        "export const mitsubachiTokenTypes = [\n" +
         dictionary.allProperties
           .map(
             (prop) =>
@@ -16,8 +16,8 @@ module.exports = {
           )
           .join("\n") +
         "\n] as const;\n" +
-        "export type SpTokenTypes = (typeof spTokenTypes)[number];\n\n" +
-        "export const tokens: {[key in SpTokenTypes]:string} = {\n" +
+        "export type MitsubachiTokenTypes = (typeof mitsubachiTokenTypes)[number];\n\n" +
+        "export const tokens: {[key in MitsubachiTokenTypes]:string} = {\n" +
         dictionary.allProperties
           .map(function (prop) {
             let to_ret_prop =
@@ -40,7 +40,7 @@ module.exports = {
       buildPath: "../lib/",
       files: [
         {
-          destination: "speeda-tokens.css",
+          destination: "mitsubachi-tokens.css",
           format: "css/variables",
           options: {
             outputReferences: true,
@@ -53,7 +53,7 @@ module.exports = {
       buildPath: "../lib/",
       files: [
         {
-          destination: "speeda-tokens-host.css",
+          destination: "mitsubachi-tokens-host.css",
           format: "css/variables",
           options: {
             selector: ":host",
@@ -67,7 +67,7 @@ module.exports = {
       buildPath: "../lib/",
       files: [
         {
-          destination: "speeda-tokens.scss",
+          destination: "mitsubachi-tokens.scss",
           format: "scss/variables",
           options: {
             outputReferences: true,
@@ -79,7 +79,7 @@ module.exports = {
       buildPath: "../lib/",
       files: [
         {
-          destination: "speeda-tokens.ts",
+          destination: "mitsubachi-tokens.ts",
           format: "typeScript/myFormat",
         },
       ],

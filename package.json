@@ -1,7 +1,7 @@
 {
-  "name": "@sp-design/token",
-  "version": "9.0.1",
-  "description": "SPEEDA Design system tokens",
+  "name": "mitsubachi-token",
+  "version": "0.0.1",
+  "description": "Mitsubachi Design system tokens",
   "main": "lib",
   "directories": {
     "example": "example"
@@ -12,16 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/uzabase/sp-design-token.git"
+    "url": "git@github.com:uzabase/mitsubachi-token.git"
   },
   "files": [
     "lib"
   ],
-  "author": "Hazuki Okuda,Tsunaki Okubo",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/uzabase/sp-design-token#readme",
+  "homepage": "https://github.com/uzabase/mitsubachi-token#readme",
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "yakuhanjp": "^4.1.1"
