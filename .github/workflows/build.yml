@@ -47,5 +47,5 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: update build artifacts [skip ci]"
+          git commit -m "デザイントークンファイルを更新"
           git push origin HEAD:main
