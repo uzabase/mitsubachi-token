@@ -216,7 +216,12 @@ const main = async () => {
     .map((variable) => {
       const resolvedVariable = resolveColorVariable(variable, allVariables);
 
-      const color = `semantic-${variable.name.split("/").join("-").trim()}`;
+      const color = `semantic-${variable.name
+        .split("/")
+        .slice(1)
+        .join("-")
+        .trim()}`;
+
       const value = Object.values(resolvedVariable.valuesByMode)[0];
 
       return {
