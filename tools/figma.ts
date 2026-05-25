@@ -168,12 +168,12 @@ const main = async () => {
   );
 
   const uiPrimitiveColorCollection = findLocalVariableCollectionByName(
-    "UI Primitive Color",
+    "ui-primitive-color",
     primitiveLocalVariables.variableCollections
   );
 
   const semanticColorCollection = findLocalVariableCollectionByName(
-    "UI Semantic Color",
+    "ui-semantic-color",
     semanticLocalVariables.variableCollections
   );
 
@@ -218,7 +218,6 @@ const main = async () => {
 
       const color = `semantic-${variable.name
         .split("/")
-        .slice(1)
         .join("-")
         .trim()}`;
 

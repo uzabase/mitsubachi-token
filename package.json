@@ -1,6 +1,6 @@
 {
   "name": "mitsubachi-token",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Mitsubachi Design system tokens",
   "main": "lib",
   "directories": {
