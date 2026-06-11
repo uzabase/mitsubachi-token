@@ -1,14 +1,15 @@
 {
-  "name": "mitsubachi-token",
+  "name": "@uzabase/mitsubachi-token",
   "version": "0.0.2",
-  "description": "Mitsubachi Design system tokens",
+  "description": "Mitsubachi Design System Tokens",
   "main": "lib",
   "directories": {
     "example": "example"
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm i -D typescript && npm run build"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,11 @@
   "files": [
     "lib"
   ],
-  "license": "UNLICENSED",
+  "author": "Uzabase, Inc.",
+  "license": "MIT",
   "homepage": "https://github.com/uzabase/mitsubachi-token#readme",
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "yakuhanjp": "^4.1.1"
