@@ -1,6 +1,6 @@
 /**
  * Do not edit directly
- * Generated on Mon, 25 May 2026 05:29:10 GMT
+ * Generated on Mon, 15 Jun 2026 07:37:14 GMT
  */
 
 :root {
@@ -50,7 +50,8 @@
   --color-semantic-surface-regular-active: #ededed;
   --color-semantic-surface-positive: #dff5ea;
   --color-semantic-surface-overlay-hover: rgba(0, 0, 0, 0.07);
-  --color-semantic-surface-overlay-current: rgba(0, 0, 0, 0.07);
+  --color-semantic-surface-overlay-current-hover: rgba(0, 0, 0, 0.1);
+  --color-semantic-surface-overlay-current-default: rgba(0, 0, 0, 0.07);
   --color-semantic-surface-overlay-active: rgba(0, 0, 0, 0.1);
   --color-semantic-surface-negative: #ffedeb;
   --color-semantic-surface-information: #edf1ff;
@@ -61,7 +62,6 @@
   --color-semantic-surface-checked-hover: #315ce8;
   --color-semantic-surface-checked-default: #3f69f2;
   --color-semantic-surface-checked-active: #143dd0;
-  --color-semantic-surface-regular-focus: rgba(255, 255, 255, 0);
   --color-semantic-palette-viridian: #0d8282;
   --color-semantic-palette-violet: #3e31d5;
   --color-semantic-palette-semi-strong-red: #d30030;
@@ -95,10 +95,6 @@
   --color-semantic-elevation-semi-strong-inverse: rgba(255, 255, 255, 0);
   --color-semantic-elevation-regular-inverse: rgba(255, 255, 255, 0);
   --color-semantic-elevation-regular: rgba(0, 0, 0, 0.13);
-  --color-semantic-chart-heat-map-4: #e8edff;
-  --color-semantic-chart-heat-map-3: #c1d1ff;
-  --color-semantic-chart-heat-map-2: #8ea8fb;
-  --color-semantic-chart-heat-map-1: #6388ff;
   --color-semantic-border-strong: rgba(0, 0, 0, 0.84);
   --color-semantic-border-semi-strong-hover: rgba(0, 0, 0, 0.35);
   --color-semantic-border-semi-strong-default: rgba(0, 0, 0, 0.2);

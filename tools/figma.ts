@@ -207,19 +207,30 @@ const main = async () => {
     ...semanticLocalVariables.variables,
   };
 
-  const semanticColorTokens = semanticColorCollection.variableIds
+  const semanticActiveVariables = semanticColorCollection.variableIds
     .map((variableId) =>
       findVariableById(variableId, semanticLocalVariables.variables)
     )
     .filter((variable) => !variable.deletedButReferenced)
-    .filter((variable) => !variable.remote)
+    .filter((variable) => !variable.remote);
+
+  const skippedVariables = semanticActiveVariables.filter((variable) =>
+    variable.name.includes("*")
+  );
+
+  if (skippedVariables.length > 0) {
+    console.log(
+      `*が入っているため除外された変数 (${skippedVariables.length}件):`,
+      skippedVariables.map((v) => v.name)
+    );
+  }
+
+  const semanticColorTokens = semanticActiveVariables
+    .filter((variable) => !variable.name.includes("*"))
     .map((variable) => {
       const resolvedVariable = resolveColorVariable(variable, allVariables);
 
-      const color = `semantic-${variable.name
-        .split("/")
-        .join("-")
-        .trim()}`;
+      const color = `semantic-${variable.name.split("/").join("-").trim()}`;
 
       const value = Object.values(resolvedVariable.valuesByMode)[0];
 
