@@ -50,3 +50,8 @@ Thumbs.db
 tools/tokens/color/
 tools/figma.js
 lib/mitsubachi-tokens.js
+
+# 認証情報（Figma のトークンとファイルキー）
+.env
+.env.*
+!.env.example
