@@ -3,15 +3,19 @@ name: Build
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./tools
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # 後方互換性チェックが origin/main の生成物と比較するため履歴を取得する
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -19,30 +23,66 @@ jobs:
           node-version: "lts/*"
 
       - name: Install dependencies
+        working-directory: ./tools
         run: npm install
 
       - name: Build JSON from Figma
+        working-directory: ./tools
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           PRIMITIVE_FIGMA_DESIGN_FILE_KEY: ${{ secrets.PRIMITIVE_FIGMA_DESIGN_FILE_KEY }}
           SEMANTIC_FIGMA_DESIGN_FILE_KEY: ${{ secrets.SEMANTIC_FIGMA_DESIGN_FILE_KEY }}
         run: npm run build:json
 
-      - name: Build CSS
+      - name: Build tokens
+        working-directory: ./tools
         run: npm run build:css
 
-      - name: Stage all changes
-        run: git add -A
-
       - name: Check for changes
-        id: check_changes
+        id: changes
         run: |
-          git diff --staged --quiet || echo "changes_exist=true" >> $GITHUB_OUTPUT
+          if git diff --quiet -- lib tools/tokens; then
+            echo "exist=false" >> "$GITHUB_OUTPUT"
+            echo "生成物に変化はありませんでした。" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "exist=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Commit and push build artifacts
-        if: steps.check_changes.outputs.changes_exist == 'true'
+      - name: Check backward compatibility
+        id: compat
+        if: steps.changes.outputs.exist == 'true'
+        working-directory: ./tools
         run: |
+          npm run --silent check:compat -- --baseline origin/main --github-output \
+            | tee "$RUNNER_TEMP/compat-report.md"
+          cat "$RUNNER_TEMP/compat-report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create pull request
+        if: steps.changes.outputs.exist == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="tokens/update-${{ github.run_id }}"
+
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A lib tools/tokens
           git commit -m "デザイントークンファイルを更新"
-          git push origin HEAD:main
+          git push origin "$BRANCH"
+
+          LABELS="design-token"
+          if [ "${{ steps.compat.outputs.has_breaking }}" = "true" ]; then
+            LABELS="$LABELS,breaking-change"
+          fi
+          for label in ${LABELS//,/ }; do
+            gh label create "$label" --force >/dev/null 2>&1 || true
+          done
+
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "デザイントークンファイルを更新（要 ${{ steps.compat.outputs.suggested_bump }}）" \
+            --body-file "$RUNNER_TEMP/compat-report.md" \
+            --label "$LABELS"
