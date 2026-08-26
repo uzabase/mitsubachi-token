@@ -88,10 +88,18 @@ interface ColorToken {
 async function fetchLocalVariables(fileKey: string) {
   const url = `https://api.figma.com/v1/files/${fileKey}/variables/local`;
   const headers = { "X-FIGMA-TOKEN": TOKEN };
-  const response: LocalVariablesApiResponse = await fetch(url, {
-    headers,
-  }).then((response) => response.json());
-  return response.meta;
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(
+      `Figma API の呼び出しに失敗しました (${response.status}): ${body}\n` +
+        `FIGMA_TOKEN の有効期限とスコープ（Variables の read）を確認してください。`
+    );
+  }
+
+  const json: LocalVariablesApiResponse = await response.json();
+  return json.meta;
 }
 
 function rgbaToHex(r: number, g: number, b: number, a: number) {
