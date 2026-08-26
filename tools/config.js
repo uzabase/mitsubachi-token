@@ -1,10 +1,20 @@
+const FILE_HEADER = [
+  "Do not edit directly",
+  "Generated from the Mitsubachi design tokens (see tools/README.md)",
+];
+
 module.exports = {
   source: ["tokens/**/*.json"],
+  fileHeader: {
+    // タイムスタンプを含めない。トークンに変化がなければ生成物も変化しないようにして、
+    // CI の差分検知と後方互換性チェックが意味を持つようにするため。
+    mitsubachi: () => FILE_HEADER,
+  },
   format: {
     "typeScript/myFormat": ({ dictionary }) => {
       return (
-        "\n// Do not edit directly\n// Generated on " +
-        new Date().toUTCString() +
+        "\n" +
+        FILE_HEADER.map((line) => "// " + line).join("\n") +
         "\n\n" +
         "export const mitsubachiTokenTypes = [\n" +
         dictionary.allProperties
@@ -44,6 +54,7 @@ module.exports = {
           format: "css/variables",
           options: {
             outputReferences: true,
+            fileHeader: "mitsubachi",
           },
         },
       ],
@@ -58,6 +69,7 @@ module.exports = {
           options: {
             selector: ":host",
             outputReferences: true,
+            fileHeader: "mitsubachi",
           },
         },
       ],
@@ -71,6 +83,7 @@ module.exports = {
           format: "scss/variables",
           options: {
             outputReferences: true,
+            fileHeader: "mitsubachi",
           },
         },
       ],
