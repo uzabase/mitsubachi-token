@@ -3,9 +3,6 @@
   "version": "0.0.2",
   "description": "Mitsubachi Design System Tokens",
   "main": "lib",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
