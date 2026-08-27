@@ -29,7 +29,7 @@ lib/mitsubachi-tokens.ts        (トークン名の union 型 + 値のマップ)
 | `tools/check-compat.ts` | 後方互換性チェック。詳細は [versioning.md](./versioning.md) |
 | `tools/tokens/` | style-dictionary の入力 JSON |
 | `docs/` | 開発者向けドキュメント |
-| `example/` | Vue の動作確認用アプリ。**現在参照先が古く動きません**（下記「既知の未整理事項」参照） |
+| `storybook/` | トークンのカタログ。**配布物ではない。**[storybook/README.md](../storybook/README.md) 参照 |
 
 ## 絶対に守ること
 
@@ -104,7 +104,7 @@ npm run build:json:local
 # 環境変数を直接渡す場合（CI はこちらを使う）
 FIGMA_TOKEN=*** PRIMITIVE_FIGMA_DESIGN_FILE_KEY=*** SEMANTIC_FIGMA_DESIGN_FILE_KEY=*** npm run build:json
 
-# JSON から lib/ の各フォーマットを生成
+# JSON から lib/ の各フォーマットと storybook/tokens/ のカタログ用 CSS を生成
 npm run build:css
 
 # 後方互換性チェック（versioning.md 参照）
@@ -116,12 +116,29 @@ npm run format
 
 ルートの `npm run build` は `tsc` で `lib/mitsubachi-tokens.js` を出す npm 公開用のビルドで、トークン生成とは別物。
 
+### カタログ（Storybook）
+
+`storybook/` で実行する。トークンの一覧を色見本つきで確認できる。
+
+```bash
+cd storybook
+npm install
+npm run dev     # http://localhost:6006
+```
+
+表示するデータは `npm run build:css` が生成した `storybook/tokens/` を読んでいるので、
+**トークンを更新したら先に `build:css` を実行する。** 詳細は [storybook/README.md](../storybook/README.md)。
+
+Storybook 10 は Node 20.19+ を要求する。`storybook/.node-version` で指定してあるので、
+nodenv などを使っていれば自動で切り替わる。
+
 ## トークンの命名
 
 `tools/figma.ts` が Figma の変数名から生成する。
 
 - **primitive** — Figma の `<collection>/<...>` の先頭階層を落として `primitive-` を付ける → `color-primitive-blue-120`
 - **semantic** — 階層を `-` で連結して `semantic-` を付ける → `color-semantic-text-regular`
+- **semantic は primitive への参照として出力される。** Figma 上で semantic 変数は primitive 変数へのエイリアスになっているので、その構造を保って `{color.primitive-white.value}` の形で書き出す。css / scss では `var(--color-primitive-white)` / `$color-primitive-white` になる（`outputReferences: true`）。参照先が出力対象に無い場合と、Figma 側でエイリアスでない場合は解決済みの値を書き出す。件数は `build:json` のログに出る
 - 名前に `*` を含む Figma 変数は未確定扱いで**除外される**。除外された一覧は `build:json` の実行時にログに出るので必ず確認する
 - TypeScript 出力ではハイフンがアンダースコアになる → `color_semantic_text_regular`
 
@@ -157,5 +174,5 @@ CI が使う `FIGMA_TOKEN` は**チームメンバー個人の Personal access t
 ## 既知の未整理事項
 
 - **npm パッケージの JS エントリが機能していない。** `package.json` の `main: "lib"` は `lib/index.js` を指すが存在しない。`lib/mitsubachi-tokens.js` を直接 import しても、ESM として出力されているのに `"type": "module"` が無いため Node からは CJS 扱いされて失敗する。`.d.ts` も出していないため型も提供できていない。css / scss 経由の利用は正常に動作する。
-- `example/` が古い。`@mitsubachi/token` を git 依存で参照し、scss は `@sp-design/token/lib/speeda-tokens` を `@use` しており、現在のパッケージ名・パスと一致しない。
+  **パッケージとして install して使う経路を確認する手段が現在ない。** かつて `example/` がその役割を持っていたが、前身の sp-design-token から引き継いだまま移行が途中で止まり動かなくなっていたため削除した（`git log -- example/` で辿れる）。`storybook/` はリポジトリ内の生成物を直接読むので、この経路は検証できない。
 - `pubspec.yaml` が `name: sp_design_token` / `version: 6.0.1` で `package.json` と不整合。旧リポジトリの残骸と思われる。
