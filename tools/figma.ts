@@ -82,6 +82,12 @@ interface LocalVariablesApiResponse {
 
 interface ColorToken {
   color: string;
+  /**
+   * style-dictionary に渡す値。
+   *
+   * primitive は解決済みの hex。semantic は Figma でエイリアスになっていれば
+   * `{color.primitive-white.value}` のような参照。参照にできないものは hex。
+   */
   value: string;
 }
 
@@ -133,6 +139,55 @@ function findLocalVariableCollectionByName(
 
 function findVariableById(id: string, variables: Variables) {
   return Object.values(variables).find((variable) => variable.id === id);
+}
+
+/** primitive の Figma 変数名 → トークン名。コレクション階層を1段落とす。 */
+function primitiveTokenName(variable: Variable) {
+  return `primitive-${variable.name.split("/").slice(1).join("-").trim()}`;
+}
+
+/** semantic の Figma 変数名 → トークン名。階層はすべて連結する。 */
+function semanticTokenName(variable: Variable) {
+  return `semantic-${variable.name.split("/").join("-").trim()}`;
+}
+
+/**
+ * semantic 変数が直接参照している primitive のトークン名を返す。
+ *
+ * Figma では semantic 変数は primitive 変数への VARIABLE_ALIAS になっている。
+ * その対応を style-dictionary の参照として書き出すために、末端まで潰す前の
+ * 参照先を 1 ホップだけ見る。
+ *
+ * 参照になっていない、参照先が出力対象に無い、自分自身を指しているなど、
+ * 有効な参照を作れない場合は undefined を返す。呼び出し側は解決済みの hex に
+ * フォールバックする。壊れた var() を出さないことを優先する。
+ */
+function aliasedTokenName(
+  variable: Variable,
+  allVariables: Variables,
+  emittedTokenNames: Set<string>,
+  ownTokenName: string
+): string | undefined {
+  const value = Object.values(variable.valuesByMode)[0] as
+    | Color
+    | VariableAlias
+    | undefined;
+  if (!value || !isVariableAlias(value)) return undefined;
+
+  const target = findVariableById(value.id, allVariables);
+  if (!target) return undefined;
+
+  // semantic ファイル側には primitive が別 ID の remote 変数として入っている。
+  // ID では突合できないので名前で照合する。
+  for (const candidate of [
+    primitiveTokenName(target),
+    semanticTokenName(target),
+  ]) {
+    if (candidate === ownTokenName) continue;
+    if (emittedTokenNames.has(candidate)) return candidate;
+  }
+
+  return undefined;
 }
 
 function resolveColorVariable(
@@ -197,11 +252,7 @@ const main = async () => {
         primitiveLocalVariables.variables
       );
 
-      const color = `primitive-${variable.name
-        .split("/")
-        .slice(1)
-        .join("-")
-        .trim()}`;
+      const color = primitiveTokenName(variable);
       const value = Object.values(resolvedVariable.valuesByMode)[0];
 
       return {
@@ -233,20 +284,50 @@ const main = async () => {
     );
   }
 
-  const semanticColorTokens = semanticActiveVariables
-    .filter((variable) => !variable.name.includes("*"))
-    .map((variable) => {
-      const resolvedVariable = resolveColorVariable(variable, allVariables);
+  const includedSemanticVariables = semanticActiveVariables.filter(
+    (variable) => !variable.name.includes("*")
+  );
 
-      const color = `semantic-${variable.name.split("/").join("-").trim()}`;
+  // 参照を書き出せる相手の一覧。ここに無い名前を参照すると var() が壊れるので、
+  // 照合してから参照にする。
+  const emittedTokenNames = new Set<string>([
+    ...primitiveColorTokens.map((token) => token.color),
+    ...includedSemanticVariables.map(semanticTokenName),
+  ]);
 
-      const value = Object.values(resolvedVariable.valuesByMode)[0];
+  // 参照にできなかったものを後でログに出す。Figma 側の設計と食い違っていないかの手掛かり。
+  const literalSemanticTokens: string[] = [];
 
-      return {
-        color,
-        value: toHexValue(value),
-      };
-    });
+  const semanticColorTokens = includedSemanticVariables.map((variable) => {
+    const color = semanticTokenName(variable);
+
+    const alias = aliasedTokenName(
+      variable,
+      allVariables,
+      emittedTokenNames,
+      color
+    );
+
+    if (alias) {
+      return { color, value: `{color.${alias}.value}` };
+    }
+
+    // エイリアスでない、または参照先が出力対象に無い。解決済みの hex にする。
+    literalSemanticTokens.push(color);
+    const resolvedVariable = resolveColorVariable(variable, allVariables);
+    const value = Object.values(resolvedVariable.valuesByMode)[0];
+
+    return { color, value: toHexValue(value) };
+  });
+
+  const aliasedCount = semanticColorTokens.length - literalSemanticTokens.length;
+  console.log(
+    `semantic ${semanticColorTokens.length}件: ` +
+      `primitive への参照 ${aliasedCount}件 / 生値 ${literalSemanticTokens.length}件`
+  );
+  if (literalSemanticTokens.length > 0) {
+    console.log("生値で出力した semantic:", literalSemanticTokens);
+  }
 
   const colorContent = JSON.stringify(
     {
