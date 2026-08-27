@@ -16,7 +16,16 @@
 
 ## check:compat
 
-`tools/` で実行する。`origin/main` の `lib/mitsubachi-tokens.ts` と作業ツリーを比較し、トークン名 → 値の対応を集合比較する。
+`tools/` で実行する。`origin/main` と作業ツリーを比較する。見るファイルは2つ。
+
+| ファイル | 何を判定するか |
+| --- | --- |
+| `lib/mitsubachi-tokens.ts` | 解決済みの値。トークンの**削除・追加・値変更** |
+| `lib/mitsubachi-tokens.css` | 配布される宣言そのもの。**表現の変更** |
+
+CSS も見るのは、TS 出力が参照を解決した値しか持たないため。`#ffffff` が
+`var(--color-primitive-white)` に変わっても TS では差分が出ず、CSS を見ないと配布物が
+100 行変わっても「変化なし」と報告してしまう。
 
 ```bash
 npm run check:compat                      # origin/main と比較（既定）
@@ -41,11 +50,19 @@ npm run check:compat -- --github-output    # CI 専用。suggested_bump / has_br
 | 削除に「リネームの可能性があります」 | 同じ値の新トークンが見つかった。ほぼリネームなので、その新トークンへのエイリアスを書く |
 | **値変更** | 色が変わる。意図的なデザイン変更か、Figma の作業途中を拾ったかを人が確認する |
 | **追加** | 安全。minor |
+| **表現の変更** | 解決後の色は同じで CSS の書き方だけが変わった（`#ffffff` → `var(--color-primitive-white)` など）。ファイル全体を import している利用者の見た目は変わらないが、配布する CSS の中身は変わる。既定では patch |
 | **現在 deprecated なトークン** | 過去に付けたエイリアスの一覧。次の major で消す対象 |
 
 出力はそのまま PR 本文に貼れる markdown。
 
 `check:compat` は値の変更を検知するが、**それが妥当かは判断できない**。事故もデザイン変更も同じ「値変更」として出るので、ここは人が見る。
+
+「表現の変更」も同じく人が見る。計算結果の色は変わらないので大半は無害だが、次の2つに当てはまる利用者には影響が出る。
+
+- 特定の custom property だけを抜き出して使っている（参照先が定義されていない文脈に持ち出すと壊れる）
+- 参照先の primitive を上書きしている（意図せず semantic 側が動く）
+
+なお検知は `lib/mitsubachi-tokens.css` だけで行う。`.scss` も同時に変わるが、原因は同じなので二重に報告しない。
 
 ## 削除・リネームの手順（廃止期間を置く）
 

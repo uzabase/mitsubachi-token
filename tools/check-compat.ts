@@ -1,8 +1,17 @@
 /**
  * デザイントークンの後方互換性チェック。
  *
- * 基準(git ref)と現在の作業ツリーの lib/mitsubachi-tokens.ts を比較し、
- * トークンの削除・追加・値変更を分類して、必要なバージョン上げを提示する。
+ * 基準(git ref)と現在の作業ツリーを比較し、トークンの削除・追加・値変更・表現の変更を
+ * 分類して、必要なバージョン上げを提示する。
+ *
+ * 2 つのファイルを見る。
+ *
+ * - lib/mitsubachi-tokens.ts  … 解決済みの値。トークンの削除・追加・値変更を判定する
+ * - lib/mitsubachi-tokens.css … 実際に配布される宣言。表現の変更を判定する
+ *
+ * TS 出力は参照を解決した値しか持たないため、`#ffffff` が
+ * `var(--color-primitive-white)` に変わっても TS では差分が出ない。CSS も見ないと
+ * 配布物が 100 行変わっても「変化なし」と報告してしまう。
  *
  *   npm run check:compat                      # origin/main と比較
  *   npm run check:compat -- --baseline HEAD   # 比較対象を変える
@@ -14,6 +23,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const TOKENS_FILE = "lib/mitsubachi-tokens.ts";
+const CSS_FILE = "lib/mitsubachi-tokens.css";
 const REPO_ROOT = path.resolve(__dirname, "..");
 
 interface Token {
@@ -80,31 +90,78 @@ function parseTokens(source: string, label: string): TokenMap {
   return tokens;
 }
 
-function readBaseline(ref: string): TokenMap {
-  let source: string;
+/** CSS の custom property 宣言を読み取る。値は書かれたままの文字列で持つ。 */
+function parseCssDeclarations(source: string, label: string): Map<string, string> {
+  const declarations = new Map<string, string>();
+
+  for (const line of source.split("\n")) {
+    const matched = /^\s*(--[A-Za-z0-9_-]+):\s*(.+);\s*$/.exec(line);
+    if (!matched) continue;
+    const [, name, value] = matched;
+    declarations.set(name, value.trim());
+  }
+
+  if (declarations.size === 0) {
+    throw new Error(`${label}: CSS の宣言を1件も読み取れませんでした`);
+  }
+
+  return declarations;
+}
+
+function readFileAtRef(ref: string, file: string): string {
   try {
-    source = execFileSync("git", ["show", `${ref}:${TOKENS_FILE}`], {
+    return execFileSync("git", ["show", `${ref}:${file}`], {
       cwd: REPO_ROOT,
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
     });
   } catch {
     throw new Error(
-      `基準 ${ref}:${TOKENS_FILE} を読めませんでした。` +
+      `基準 ${ref}:${file} を読めませんでした。` +
         `git fetch origin を実行するか --baseline で別の ref を指定してください。`
     );
   }
-  return parseTokens(source, ref);
+}
+
+function readFileInWorkTree(file: string): string {
+  const absolute = path.join(REPO_ROOT, file);
+  if (!fs.existsSync(absolute)) {
+    throw new Error(
+      `${file} がありません。先に npm run build:css を実行してください。`
+    );
+  }
+  return fs.readFileSync(absolute, "utf8");
+}
+
+function readBaseline(ref: string): TokenMap {
+  return parseTokens(readFileAtRef(ref, TOKENS_FILE), ref);
 }
 
 function readCurrent(): TokenMap {
-  const file = path.join(REPO_ROOT, TOKENS_FILE);
-  if (!fs.existsSync(file)) {
-    throw new Error(
-      `${TOKENS_FILE} がありません。先に npm run build:css を実行してください。`
-    );
-  }
-  return parseTokens(fs.readFileSync(file, "utf8"), "作業ツリー");
+  return parseTokens(readFileInWorkTree(TOKENS_FILE), "作業ツリー");
+}
+
+function readBaselineCss(ref: string): Map<string, string> {
+  return parseCssDeclarations(readFileAtRef(ref, CSS_FILE), ref);
+}
+
+function readCurrentCss(): Map<string, string> {
+  return parseCssDeclarations(readFileInWorkTree(CSS_FILE), "作業ツリー");
+}
+
+/**
+ * CSS の custom property 名を TS 出力のトークン名に合わせる。
+ * `--color-semantic-text-regular` → `color_semantic_text_regular`
+ * 変換規則は tools/config.js の typeScript/myFormat と揃える。
+ */
+function cssVarToTokenName(cssVar: string): string {
+  // tools/tsconfig.json が target: es5 のため replaceAll は使わない。
+  return cssVar
+    .replace(/^--/, "")
+    .split("-")
+    .join("_")
+    .split("__")
+    .join("_");
 }
 
 function isDeprecated(token: Token) {
@@ -116,9 +173,22 @@ interface Diff {
   added: string[];
   changed: { name: string; before: string; after: string }[];
   deprecated: { name: string; comment: string }[];
+  /**
+   * 解決後の色は同じまま、CSS の書き方だけが変わったもの。
+   * 例: `#ffffff` → `var(--color-primitive-white)`
+   *
+   * 計算結果は変わらないので利用者の見た目は変わらないが、配布する CSS の中身は
+   * 変わる。TS 出力では差分が出ないため、ここで別枠にして必ずレビュワーに見せる。
+   */
+  representation: { name: string; before: string; after: string }[];
 }
 
-function diffTokens(baseline: TokenMap, current: TokenMap): Diff {
+function diffTokens(
+  baseline: TokenMap,
+  current: TokenMap,
+  cssBaseline: Map<string, string>,
+  cssCurrent: Map<string, string>
+): Diff {
   const removedNames = [...baseline.keys()].filter(
     (name) => !current.has(name)
   );
@@ -149,7 +219,27 @@ function diffTokens(baseline: TokenMap, current: TokenMap): Diff {
     .filter(([, token]) => isDeprecated(token))
     .map(([name, token]) => ({ name, comment: token.comment! }));
 
-  return { removed, added, changed, deprecated };
+  // 解決後の値が動いたものは「値変更」として既に報告するので、表現の変更からは除く。
+  // 削除・追加されたものも対象外（そもそも比較する相手がいない）。
+  const alreadyReported = new Set<string>([
+    ...changed.map(({ name }) => name),
+    ...removed.map(({ name }) => name),
+    ...added,
+  ]);
+
+  const representation = [...cssBaseline.entries()]
+    .filter(([cssVar, before]) => {
+      const after = cssCurrent.get(cssVar);
+      if (after === undefined || after === before) return false;
+      return !alreadyReported.has(cssVarToTokenName(cssVar));
+    })
+    .map(([cssVar, before]) => ({
+      name: cssVar,
+      before,
+      after: cssCurrent.get(cssVar)!,
+    }));
+
+  return { removed, added, changed, deprecated, representation };
 }
 
 type Bump = "major" | "minor" | "patch" | "none";
@@ -158,6 +248,8 @@ function suggestBump(diff: Diff): Bump {
   if (diff.removed.length > 0) return "major";
   if (diff.added.length > 0) return "minor";
   if (diff.changed.length > 0) return "patch";
+  // 表現の変更は計算結果を変えないが、配布する CSS は変わるので patch 扱いにする。
+  if (diff.representation.length > 0) return "patch";
   return "none";
 }
 
@@ -188,7 +280,8 @@ function report(diff: Diff, options: Options): string {
   lines.push("");
   lines.push(`- 基準: \`${options.baseline}\``);
   lines.push(
-    `- 削除 ${diff.removed.length} / 追加 ${diff.added.length} / 値変更 ${diff.changed.length}`
+    `- 削除 ${diff.removed.length} / 追加 ${diff.added.length} / 値変更 ${diff.changed.length}` +
+      ` / 表現の変更 ${diff.representation.length}`
   );
 
   const label =
@@ -231,6 +324,33 @@ function report(diff: Diff, options: Options): string {
     lines.push("");
   }
 
+  if (diff.representation.length > 0) {
+    lines.push(`### 書き方が変わったトークン（色は変わりません）`);
+    lines.push("");
+    lines.push(
+      `解決後の色は同じで、\`${CSS_FILE}\` の書き方だけが変わっています。` +
+        `ファイル全体を import している利用者の見た目は変わりません。`
+    );
+    lines.push("");
+    lines.push(
+      `**ただし配布する CSS の中身は変わります。** ` +
+        `特定の custom property だけを抜き出して使っている場合や、` +
+        `参照先を上書きしている場合は影響が出ます。意図した変更かレビュワーが確認してください。`
+    );
+    lines.push("");
+
+    const shown = diff.representation.slice(0, 20);
+    for (const { name, before, after } of shown) {
+      lines.push(`- \`${name}\`: \`${before}\` → \`${after}\``);
+    }
+    if (diff.representation.length > shown.length) {
+      lines.push(
+        `- … 他 ${diff.representation.length - shown.length} 件（全件は git diff で確認してください）`
+      );
+    }
+    lines.push("");
+  }
+
   if (diff.added.length > 0) {
     lines.push(`### 追加されたトークン`);
     lines.push("");
@@ -266,6 +386,7 @@ function writeGithubOutput(diff: Diff) {
       `removed_count=${diff.removed.length}`,
       `added_count=${diff.added.length}`,
       `changed_count=${diff.changed.length}`,
+      `representation_count=${diff.representation.length}`,
       "",
     ].join("\n")
   );
@@ -273,7 +394,12 @@ function writeGithubOutput(diff: Diff) {
 
 const main = () => {
   const options = parseArgs(process.argv.slice(2));
-  const diff = diffTokens(readBaseline(options.baseline), readCurrent());
+  const diff = diffTokens(
+    readBaseline(options.baseline),
+    readCurrent(),
+    readBaselineCss(options.baseline),
+    readCurrentCss()
+  );
 
   console.log(report(diff, options));
 
