@@ -2,6 +2,15 @@
 
 デザイントークンのカタログ。**配布物ではない**（npm パッケージには含まれない）。
 
+**公開先: https://uzabase.github.io/mitsubachi-token/**
+
+`main` の `storybook/` 配下に変更が入ると `.github/workflows/storybook-release.yaml` が
+GitHub Pages にデプロイする。カタログが読むのはコミット済みの `storybook/tokens/` なので、
+デプロイに Figma の認証情報は要らない。
+
+Pages はリポジトリ名のサブパス配下で配信されるため、CI では `REPOSITORY_NAME` を渡して
+vite の `base` を合わせている。ローカルでは未設定なので相対パスのまま。
+
 色見本を手で書くのではなく、`tools/` の style-dictionary が生成した注釈付き CSS を
 [storybook-design-token](https://github.com/UX-and-I/storybook-design-token) が読んで表示する。
 Figma とカタログがズレることはない。

@@ -132,6 +132,9 @@ npm run dev     # http://localhost:6006
 Storybook 10 は Node 20.19+ を要求する。`storybook/.node-version` で指定してあるので、
 nodenv などを使っていれば自動で切り替わる。
 
+公開先は **https://uzabase.github.io/mitsubachi-token/**。`main` の `storybook/` 配下に
+変更が入ると `.github/workflows/storybook-release.yaml` が GitHub Pages にデプロイする。
+
 ## トークンの命名
 
 `tools/figma.ts` が Figma の変数名から生成する。

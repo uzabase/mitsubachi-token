@@ -1,0 +1,67 @@
+name: Deploy Storybook
+
+# トークンのカタログを GitHub Pages に公開する。
+# https://uzabase.github.io/mitsubachi-token/
+#
+# カタログが読むのはリポジトリにコミット済みの storybook/tokens/ なので、
+# Figma の認証情報は不要。
+
+on:
+  push:
+    branches:
+      - main
+    # カタログに影響しない変更でデプロイを走らせない
+    paths:
+      - "storybook/**"
+      - ".github/workflows/storybook-release.yaml"
+
+  workflow_dispatch:
+
+# 同時に走らせない。後から来たものを優先する。
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          # storybook/.node-version を唯一の正とする（Storybook 10 は 20.19+ が必要）
+          node-version-file: storybook/.node-version
+          cache: npm
+          cache-dependency-path: storybook/package-lock.json
+
+      - name: Install dependencies
+        working-directory: storybook
+        run: npm ci
+
+      - name: Build Storybook
+        working-directory: storybook
+        run: npm run build
+        env:
+          # Pages はリポジトリ名のサブパス配下で配信するため base の調整に使う
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook/storybook-static/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

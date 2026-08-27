@@ -18,11 +18,23 @@ const config: StorybookConfig = {
     },
   ],
 
+  core: {
+    disableTelemetry: true,
+  },
+
   viteFinal: async (viteConfig) => {
     // アドオンは publicDir に design-tokens.source.json を書き出し、プレビューから
     // 相対パスで fetch する。Storybook の vite builder は publicDir を無効化することが
     // あるため、ここで必ず有効にしておく。false のままだとカタログが空になる。
     viteConfig.publicDir = viteConfig.publicDir || "public";
+
+    // GitHub Pages はリポジトリ名のサブパス配下で配信するため、base を合わせる。
+    // ローカルでは REPOSITORY_NAME が無いので既定のままにする。
+    const repository = process.env.REPOSITORY_NAME;
+    if (repository) {
+      viteConfig.base = `/${repository}/`;
+    }
+
     return viteConfig;
   },
 };
