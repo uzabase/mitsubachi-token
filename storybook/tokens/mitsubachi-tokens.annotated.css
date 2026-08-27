@@ -1,0 +1,262 @@
+/**
+ * Do not edit directly
+ * Generated from the Mitsubachi design tokens (see tools/README.md)
+ */
+
+:root {
+  /**
+   * @tokens Semantic / surface
+   * @presenter Color
+   */
+  --color-semantic-surface-checked-active: var(--color-primitive-blue-140); /* エイリアス → --color-primitive-blue-140 */
+  --color-semantic-surface-checked-default: var(--color-primitive-blue-100); /* エイリアス → --color-primitive-blue-100 */
+  --color-semantic-surface-checked-hover: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-surface-error-active: var(--color-primitive-tomato-30); /* エイリアス → --color-primitive-tomato-30 */
+  --color-semantic-surface-error-default: var(--color-primitive-tomato-15); /* エイリアス → --color-primitive-tomato-15 */
+  --color-semantic-surface-error-hover: var(--color-primitive-tomato-25); /* エイリアス → --color-primitive-tomato-25 */
+  --color-semantic-surface-inactive: var(--color-primitive-neutral-5-alpha); /* エイリアス → --color-primitive-neutral-5-alpha */
+  --color-semantic-surface-information: var(--color-primitive-blue-15); /* エイリアス → --color-primitive-blue-15 */
+  --color-semantic-surface-negative: var(--color-primitive-tomato-15); /* エイリアス → --color-primitive-tomato-15 */
+  --color-semantic-surface-overlay-active: var(--color-primitive-neutral-25-alpha); /* エイリアス → --color-primitive-neutral-25-alpha */
+  --color-semantic-surface-overlay-current-default: var(--color-primitive-neutral-20-alpha); /* エイリアス → --color-primitive-neutral-20-alpha */
+  --color-semantic-surface-overlay-current-hover: var(--color-primitive-neutral-25-alpha); /* エイリアス → --color-primitive-neutral-25-alpha */
+  --color-semantic-surface-overlay-hover: var(--color-primitive-neutral-20-alpha); /* エイリアス → --color-primitive-neutral-20-alpha */
+  --color-semantic-surface-positive: var(--color-primitive-green-15); /* エイリアス → --color-primitive-green-15 */
+  --color-semantic-surface-regular-active: var(--color-primitive-neutral-20); /* エイリアス → --color-primitive-neutral-20 */
+  --color-semantic-surface-regular-danger-active: var(--color-primitive-tomato-130); /* エイリアス → --color-primitive-tomato-130 */
+  --color-semantic-surface-regular-danger-default: var(--color-primitive-tomato-100); /* エイリアス → --color-primitive-tomato-100 */
+  --color-semantic-surface-regular-danger-hover: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-surface-regular-default: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-surface-regular-disabled: var(--color-primitive-neutral-5-alpha); /* エイリアス → --color-primitive-neutral-5-alpha */
+  --color-semantic-surface-regular-hover: var(--color-primitive-neutral-10); /* エイリアス → --color-primitive-neutral-10 */
+  --color-semantic-surface-required: var(--color-primitive-tomato-15); /* エイリアス → --color-primitive-tomato-15 */
+  --color-semantic-surface-selected-active: var(--color-primitive-blue-30); /* エイリアス → --color-primitive-blue-30 */
+  --color-semantic-surface-selected-default: var(--color-primitive-blue-20); /* エイリアス → --color-primitive-blue-20 */
+  --color-semantic-surface-selected-hover: var(--color-primitive-blue-25); /* エイリアス → --color-primitive-blue-25 */
+  --color-semantic-surface-semi-strong-active: var(--color-primitive-neutral-30); /* エイリアス → --color-primitive-neutral-30 */
+  --color-semantic-surface-semi-strong-default: var(--color-primitive-neutral-20); /* エイリアス → --color-primitive-neutral-20 */
+  --color-semantic-surface-semi-strong-disabled: var(--color-primitive-neutral-20-alpha); /* エイリアス → --color-primitive-neutral-20-alpha */
+  --color-semantic-surface-semi-strong-hover: var(--color-primitive-neutral-25); /* エイリアス → --color-primitive-neutral-25 */
+  --color-semantic-surface-semi-weak-danger-active: var(--color-primitive-tomato-20); /* エイリアス → --color-primitive-tomato-20 */
+  --color-semantic-surface-semi-weak-danger-hover: var(--color-primitive-tomato-15); /* エイリアス → --color-primitive-tomato-15 */
+  --color-semantic-surface-strong-active: var(--color-primitive-black); /* エイリアス → --color-primitive-black */
+  --color-semantic-surface-strong-default: var(--color-primitive-neutral-210); /* エイリアス → --color-primitive-neutral-210 */
+  --color-semantic-surface-strong-disabled: var(--color-primitive-neutral-40-alpha); /* エイリアス → --color-primitive-neutral-40-alpha */
+  --color-semantic-surface-strong-hover: var(--color-primitive-neutral-240); /* エイリアス → --color-primitive-neutral-240 */
+  --color-semantic-surface-success: var(--color-primitive-green-15); /* エイリアス → --color-primitive-green-15 */
+  --color-semantic-surface-switch-unchecked-active: var(--color-primitive-neutral-70); /* エイリアス → --color-primitive-neutral-70 */
+  --color-semantic-surface-switch-unchecked-default: var(--color-primitive-neutral-50); /* エイリアス → --color-primitive-neutral-50 */
+  --color-semantic-surface-switch-unchecked-hover: var(--color-primitive-neutral-60); /* エイリアス → --color-primitive-neutral-60 */
+  --color-semantic-surface-warning: var(--color-primitive-yellow-10); /* エイリアス → --color-primitive-yellow-10 */
+
+  /**
+   * @tokens Semantic / overlay
+   * @presenter Color
+   */
+  --color-semantic-overlay-regular: var(--color-primitive-neutral-65-alpha); /* エイリアス → --color-primitive-neutral-65-alpha */
+
+  /**
+   * @tokens Semantic / zabuton
+   * @presenter Color
+   */
+  --color-semantic-zabuton-regular: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-zabuton-semi-strong: var(--color-primitive-neutral-5); /* エイリアス → --color-primitive-neutral-5 */
+
+  /**
+   * @tokens Semantic / border
+   * @presenter Color
+   */
+  --color-semantic-border-danger: var(--color-primitive-tomato-100); /* エイリアス → --color-primitive-tomato-100 */
+  --color-semantic-border-disabled: var(--color-primitive-neutral-20-alpha); /* エイリアス → --color-primitive-neutral-20-alpha */
+  --color-semantic-border-error-active: var(--color-primitive-tomato-150); /* エイリアス → --color-primitive-tomato-150 */
+  --color-semantic-border-error-default: var(--color-primitive-tomato-100); /* エイリアス → --color-primitive-tomato-100 */
+  --color-semantic-border-error-hover: var(--color-primitive-tomato-130); /* エイリアス → --color-primitive-tomato-130 */
+  --color-semantic-border-regular: var(--color-primitive-neutral-25-alpha); /* エイリアス → --color-primitive-neutral-25-alpha */
+  --color-semantic-border-selected: var(--color-primitive-blue-100); /* エイリアス → --color-primitive-blue-100 */
+  --color-semantic-border-semi-strong-active: var(--color-primitive-neutral-100-alpha); /* エイリアス → --color-primitive-neutral-100-alpha */
+  --color-semantic-border-semi-strong-default: var(--color-primitive-neutral-45-alpha); /* エイリアス → --color-primitive-neutral-45-alpha */
+  --color-semantic-border-semi-strong-hover: var(--color-primitive-neutral-65-alpha); /* エイリアス → --color-primitive-neutral-65-alpha */
+  --color-semantic-border-strong: var(--color-primitive-neutral-210-alpha); /* エイリアス → --color-primitive-neutral-210-alpha */
+
+  /**
+   * @tokens Semantic / text
+   * @presenter Color
+   */
+  --color-semantic-text-danger: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-text-disabled: var(--color-primitive-neutral-65-alpha); /* エイリアス → --color-primitive-neutral-65-alpha */
+  --color-semantic-text-error: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-text-inactive: var(--color-primitive-neutral-65-alpha); /* エイリアス → --color-primitive-neutral-65-alpha */
+  --color-semantic-text-information: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-text-inverse: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-text-link: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-text-negative: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-text-positive: var(--color-primitive-green-120); /* エイリアス → --color-primitive-green-120 */
+  --color-semantic-text-regular: var(--color-primitive-neutral-210-alpha); /* エイリアス → --color-primitive-neutral-210-alpha */
+  --color-semantic-text-required: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-text-selected: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-text-static-white: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-text-weak: var(--color-primitive-neutral-100-alpha); /* エイリアス → --color-primitive-neutral-100-alpha */
+
+  /**
+   * @tokens Semantic / object
+   * @presenter Color
+   */
+  --color-semantic-object-danger: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-object-emphasized: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-object-error: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-object-information: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-object-inverse: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-object-link: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-object-negative: var(--color-primitive-tomato-120); /* エイリアス → --color-primitive-tomato-120 */
+  --color-semantic-object-notice: var(--color-primitive-tomato-100); /* エイリアス → --color-primitive-tomato-100 */
+  --color-semantic-object-positive: var(--color-primitive-green-120); /* エイリアス → --color-primitive-green-120 */
+  --color-semantic-object-regular: var(--color-primitive-neutral-210-alpha); /* エイリアス → --color-primitive-neutral-210-alpha */
+  --color-semantic-object-regular-disabled: var(--color-primitive-neutral-65-alpha); /* エイリアス → --color-primitive-neutral-65-alpha */
+  --color-semantic-object-selected: var(--color-primitive-blue-120); /* エイリアス → --color-primitive-blue-120 */
+  --color-semantic-object-semi-weak-disabled: var(--color-primitive-neutral-25-alpha); /* エイリアス → --color-primitive-neutral-25-alpha */
+  --color-semantic-object-static-black: var(--color-primitive-neutral-240); /* エイリアス → --color-primitive-neutral-240 */
+  --color-semantic-object-static-white: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-object-success: var(--color-primitive-green-120); /* エイリアス → --color-primitive-green-120 */
+  --color-semantic-object-warning: var(--color-primitive-yellow-45); /* エイリアス → --color-primitive-yellow-45 */
+  --color-semantic-object-weak: var(--color-primitive-neutral-100-alpha); /* エイリアス → --color-primitive-neutral-100-alpha */
+
+  /**
+   * @tokens Semantic / palette
+   * @presenter Color
+   */
+  --color-semantic-palette-blue: var(--color-primitive-blue-130); /* エイリアス → --color-primitive-blue-130 */
+  --color-semantic-palette-brown: var(--color-primitive-brown-100); /* エイリアス → --color-primitive-brown-100 */
+  --color-semantic-palette-green: var(--color-primitive-green-100); /* エイリアス → --color-primitive-green-100 */
+  --color-semantic-palette-neutral: var(--color-primitive-neutral-45-alpha); /* エイリアス → --color-primitive-neutral-45-alpha */
+  --color-semantic-palette-plum: var(--color-primitive-plum-140); /* エイリアス → --color-primitive-plum-140 */
+  --color-semantic-palette-regular-red: var(--color-primitive-red-90); /* エイリアス → --color-primitive-red-90 */
+  --color-semantic-palette-semi-strong-red: var(--color-primitive-red-120); /* エイリアス → --color-primitive-red-120 */
+  --color-semantic-palette-violet: var(--color-primitive-violet-140); /* エイリアス → --color-primitive-violet-140 */
+  --color-semantic-palette-viridian: var(--color-primitive-viridian-100); /* エイリアス → --color-primitive-viridian-100 */
+
+  /**
+   * @tokens Semantic / background
+   * @presenter Color
+   */
+  --color-semantic-background-regular: var(--color-primitive-white); /* エイリアス → --color-primitive-white */
+  --color-semantic-background-semi-strong: var(--color-primitive-neutral-5); /* エイリアス → --color-primitive-neutral-5 */
+
+  /**
+   * @tokens Semantic / focus-ring
+   * @presenter Color
+   */
+  --color-semantic-focus-ring-regular: var(--color-primitive-neutral-240); /* エイリアス → --color-primitive-neutral-240 */
+
+  /**
+   * @tokens Semantic / elevation
+   * @presenter Color
+   */
+  --color-semantic-elevation-regular: var(--color-primitive-neutral-30-alpha); /* エイリアス → --color-primitive-neutral-30-alpha */
+  --color-semantic-elevation-regular-inverse: rgba(255, 255, 255, 0);
+  --color-semantic-elevation-semi-strong-inverse: rgba(255, 255, 255, 0);
+  --color-semantic-elevation-semi-weak: var(--color-primitive-neutral-25-alpha); /* エイリアス → --color-primitive-neutral-25-alpha */
+
+  /**
+   * @tokens Color / Primitive
+   * @presenter Color
+   */
+  --color-primitive-black: #000000;
+  --color-primitive-blue-100: #3f69f2;
+  --color-primitive-blue-110: #3663f0;
+  --color-primitive-blue-120: #315ce8;
+  --color-primitive-blue-130: #214dde;
+  --color-primitive-blue-140: #143dd0;
+  --color-primitive-blue-15: #edf1ff;
+  --color-primitive-blue-150: #0024a0;
+  --color-primitive-blue-160: #001c78;
+  --color-primitive-blue-20: #e8edff;
+  --color-primitive-blue-25: #dbe4ff;
+  --color-primitive-blue-30: #d5dfff;
+  --color-primitive-blue-40: #c1d1ff;
+  --color-primitive-blue-60: #8ea8fb;
+  --color-primitive-blue-65: #86a2fc;
+  --color-primitive-blue-70: #7796fc;
+  --color-primitive-blue-80: #6388ff;
+  --color-primitive-brown-100: #ae6022;
+  --color-primitive-green-100: #008744;
+  --color-primitive-green-120: #00783c;
+  --color-primitive-green-15: #dff5ea;
+  --color-primitive-green-150: #004020;
+  --color-primitive-green-65: #0fbd66;
+  --color-primitive-green-80: #12a35b;
+  --color-primitive-neutral-10: #f5f5f5;
+  --color-primitive-neutral-100-alpha: rgba(0, 0, 0, 0.54);
+  --color-primitive-neutral-110: #6f6f6f;
+  --color-primitive-neutral-120: #686868;
+  --color-primitive-neutral-130: #5b5b5b;
+  --color-primitive-neutral-15: #f2f2f2;
+  --color-primitive-neutral-160: #454545;
+  --color-primitive-neutral-180: #363636;
+  --color-primitive-neutral-20: #ededed;
+  --color-primitive-neutral-20-alpha: rgba(0, 0, 0, 0.07);
+  --color-primitive-neutral-200: #2d2d2d;
+  --color-primitive-neutral-210: #282828;
+  --color-primitive-neutral-210-alpha: rgba(0, 0, 0, 0.84);
+  --color-primitive-neutral-220: #222222;
+  --color-primitive-neutral-230: #1d1d1d;
+  --color-primitive-neutral-240: #191919;
+  --color-primitive-neutral-25: #e5e5e5;
+  --color-primitive-neutral-25-alpha: rgba(0, 0, 0, 0.1);
+  --color-primitive-neutral-30: #dfdfdf;
+  --color-primitive-neutral-30-alpha: rgba(0, 0, 0, 0.13);
+  --color-primitive-neutral-40-alpha: rgba(0, 0, 0, 0.18);
+  --color-primitive-neutral-45: #cbcbcb;
+  --color-primitive-neutral-45-alpha: rgba(0, 0, 0, 0.2);
+  --color-primitive-neutral-5: #f8f8f8;
+  --color-primitive-neutral-5-alpha: rgba(0, 0, 0, 0.03);
+  --color-primitive-neutral-50: #b6b6b6;
+  --color-primitive-neutral-60: #acacac;
+  --color-primitive-neutral-65-alpha: rgba(0, 0, 0, 0.35);
+  --color-primitive-neutral-70: #9b9b9b;
+  --color-primitive-neutral-90: #818181;
+  --color-primitive-plum-100: #c32ec4;
+  --color-primitive-plum-140: #910091;
+  --color-primitive-red-100: #e6103d;
+  --color-primitive-red-120: #d30030;
+  --color-primitive-red-90: #f72a48;
+  --color-primitive-tomato-100: #db351f;
+  --color-primitive-tomato-120: #c92812;
+  --color-primitive-tomato-130: #b02412;
+  --color-primitive-tomato-140: #992111;
+  --color-primitive-tomato-15: #ffedeb;
+  --color-primitive-tomato-150: #6e160b;
+  --color-primitive-tomato-160: #520e05;
+  --color-primitive-tomato-20: #ffebe8;
+  --color-primitive-tomato-25: #ffdfdb;
+  --color-primitive-tomato-30: #ffd6d1;
+  --color-primitive-tomato-60: #ff8a7a;
+  --color-primitive-tomato-65: #ff7f6e;
+  --color-primitive-tomato-70: #fc6e5b;
+  --color-primitive-tomato-80: #f25b44;
+  --color-primitive-violet-100: #6759ff;
+  --color-primitive-violet-140: #3e31d5;
+  --color-primitive-viridian-100: #0d8282;
+  --color-primitive-white: #ffffff;
+  --color-primitive-white-120-alpha: rgba(255, 255, 255, 0.59);
+  --color-primitive-white-20-alpha: rgba(255, 255, 255, 0.07);
+  --color-primitive-white-210-alpha: rgba(255, 255, 255, 0.84);
+  --color-primitive-white-25-alpha: rgba(255, 255, 255, 0.1);
+  --color-primitive-white-30-alpha: rgba(255, 255, 255, 0.13);
+  --color-primitive-white-40-alpha: rgba(255, 255, 255, 0.18);
+  --color-primitive-white-45-alpha: rgba(255, 255, 255, 0.2);
+  --color-primitive-white-65-alpha: rgba(255, 255, 255, 0.35);
+  --color-primitive-white-80-alpha: rgba(255, 255, 255, 0.45);
+  --color-primitive-yellow-10: #fcf6d4;
+  --color-primitive-yellow-140: #5f4f00;
+  --color-primitive-yellow-45: #f0c800;
+  --color-primitive-yellow-80: #a98c00;
+
+  /**
+   * @tokens Font / Family
+   * @presenter FontFamily
+   */
+  --font-family-ja: Arial, YakuHanJPs, Hiragino Sans, Hiragino Kaku Gothic ProN, Meiryo, Noto Sans JP, sans-serif;
+  --font-family-zh: Arial, YakuHanJPs, 'PingFang SC', 'Microsoft YaHei', 'PingFang TC', Microsoft JhengHei, sans-serif;
+
+  /* @tokens-end */
+}

@@ -1,0 +1,5 @@
+node_modules
+storybook-static
+
+# アドオンが publicDir に書き出す中間ファイル
+public

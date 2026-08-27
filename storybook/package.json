@@ -1,0 +1,20 @@
+{
+  "name": "mitsubachi-token-storybook",
+  "private": true,
+  "type": "module",
+  "description": "デザイントークンのカタログ。配布物ではない。",
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('public',{recursive:true,force:true})\"",
+    "dev": "npm run clean && storybook dev -p 6006",
+    "build": "npm run clean && storybook build -o storybook-static"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.0.0",
+    "@storybook/html-vite": "^10.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "storybook": "^10.0.0",
+    "storybook-design-token": "^5.0.0",
+    "vite": "^6.0.0"
+  }
+}

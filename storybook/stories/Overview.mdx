@@ -1,0 +1,50 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="はじめに" />
+
+# Speeda 3.1 MITSUBACHI Token
+
+`@uzabase/mitsubachi-token` が配布しているトークンのカタログです。
+
+このページの一覧は **Figma から生成したものをそのまま表示しています**。手で書いた色見本ではないので、Figma とズレることはありません。
+
+## 使い方
+
+```bash
+npm install @uzabase/mitsubachi-token
+```
+
+```css
+@import "@uzabase/mitsubachi-token/lib/mitsubachi-tokens.css";
+
+.button {
+  background: var(--color-semantic-object-accent-default);
+  color: var(--color-semantic-text-static-white);
+}
+```
+
+```scss
+@use "@uzabase/mitsubachi-token/lib/mitsubachi-tokens" as tokens;
+```
+
+```ts
+import { tokens } from "@uzabase/mitsubachi-token";
+
+tokens.color_semantic_text_regular;
+```
+
+Web Components の Shadow DOM 内で使う場合は `mitsubachi-tokens-host.css`（セレクタが `:host`）を読み込んでください。
+
+## トークンの階層
+
+Primitive を直接参照すると、デザイン側で用途と色の対応が変わったときに追従できません。原則 Semantic を使ってください。
+
+Semantic は色を直接持たず `var(--color-primitive-...)` で Primitive を参照しています。
+そのため **Primitive を上書きすれば Semantic 全体が追従します**（テーマ切り替えに使えます）。
+
+## 一覧
+
+- [Color / Semantic](?path=/docs/color-semantic--docs)
+- [Color / Primitive](?path=/docs/color-primitive--docs)
+- [Font / Family](?path=/docs/font-family--docs)
+- [Deprecated](?path=/docs/deprecated--docs)
