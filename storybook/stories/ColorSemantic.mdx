@@ -1,5 +1,6 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import { DesignTokenDocBlock } from "storybook-design-token/doc-blocks";
+import { presenters } from "./presenters";
 
 <Meta title="Color/Semantic" />
 
@@ -46,61 +47,61 @@ primitive 変数へのエイリアスとして定義されていて、その構�
 
 面の色。ボタンやカードの背景など。
 
-<DesignTokenDocBlock categoryName="Semantic / surface" viewType="table" maxHeight={800} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / surface" viewType="table" maxHeight={800} />
 
 ## overlay
 
 重ねる半透明の色。
 
-<DesignTokenDocBlock categoryName="Semantic / overlay" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / overlay" viewType="table" />
 
 ## zabuton
 
 要素の下に敷く面の色。
 
-<DesignTokenDocBlock categoryName="Semantic / zabuton" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / zabuton" viewType="table" />
 
 ## border
 
 枠線の色。
 
-<DesignTokenDocBlock categoryName="Semantic / border" viewType="table" maxHeight={600} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / border" viewType="table" maxHeight={600} />
 
 ## text
 
 文字色。
 
-<DesignTokenDocBlock categoryName="Semantic / text" viewType="table" maxHeight={600} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / text" viewType="table" maxHeight={600} />
 
 ## object
 
 アイコンなど、面でも文字でもない要素の色。
 
-<DesignTokenDocBlock categoryName="Semantic / object" viewType="table" maxHeight={800} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / object" viewType="table" maxHeight={800} />
 
 ## palette
 
 グラフやラベルなど、意味を持たせて色を出し分けるための色。
 
-<DesignTokenDocBlock categoryName="Semantic / palette" viewType="table" maxHeight={600} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / palette" viewType="table" maxHeight={600} />
 
 ## background
 
 画面全体の背景色。
 
-<DesignTokenDocBlock categoryName="Semantic / background" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / background" viewType="table" />
 
 ## focus-ring
 
 フォーカス時のリングの色。
 
-<DesignTokenDocBlock categoryName="Semantic / focus-ring" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / focus-ring" viewType="table" />
 
 ## elevation
 
 影や立体表現に使う色。
 
-<DesignTokenDocBlock categoryName="Semantic / elevation" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / elevation" viewType="table" />
 
 ## Other
 
@@ -108,4 +109,4 @@ primitive 変数へのエイリアスとして定義されていて、その構�
 Figma に増えたということです。** グループを追加してこのページに節を足してください。
 空の場合は何も表示されません。
 
-<DesignTokenDocBlock categoryName="Other" viewType="table" />
+<DesignTokenDocBlock presenters={presenters} categoryName="Other" viewType="table" />

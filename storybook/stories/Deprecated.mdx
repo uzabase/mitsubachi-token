@@ -1,5 +1,6 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import { DesignTokenDocBlock } from "storybook-design-token/doc-blocks";
+import { presenters } from "./presenters";
 
 <Meta title="Deprecated" />
 
@@ -33,7 +34,7 @@ Figma からトークンが削除・リネームされても、`lib/` からす�
 
 実装面の手順は `docs/versioning.md` の「削除・リネームの手順」にありますが、そちらも同じく未確定です。
 
-<DesignTokenDocBlock categoryName="Deprecated" viewType="table" maxHeight={800} />
+<DesignTokenDocBlock presenters={presenters} categoryName="Deprecated" viewType="table" maxHeight={800} />
 
 ---
 
