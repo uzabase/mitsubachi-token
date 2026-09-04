@@ -1,0 +1,13 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { DesignTokenDocBlock } from "storybook-design-token/doc-blocks";
+import { presenters } from "./presenters";
+
+<Meta title="Color/Primitive" />
+
+# Color / Primitive
+
+色そのものを定義したパレット。数値が大きいほど暗くなります。`-alpha` 付きは半透明です。
+
+> **原則としてアプリケーションから直接参照しないでください。** 用途に対応する Semantic トークンを使ってください。Primitive を直接使うと、デザイン側で用途と色の対応が変わったときに追従できません。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Color / Primitive" viewType="table" maxHeight={800} />

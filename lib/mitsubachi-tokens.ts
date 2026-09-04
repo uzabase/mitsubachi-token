@@ -1,6 +1,6 @@
 
 // Do not edit directly
-// Generated on Mon, 15 Jun 2026 07:37:14 GMT
+// Generated from the Mitsubachi design tokens (see tools/README.md)
 
 export const mitsubachiTokenTypes = [
 "color_primitive_black",

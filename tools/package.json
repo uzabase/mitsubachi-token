@@ -1,7 +1,9 @@
 {
   "scripts": {
     "build:json": "tsx figma.ts",
+    "build:json:local": "tsx --env-file=.env figma.ts",
     "build:css": "style-dictionary build",
+    "check:compat": "tsx check-compat.ts",
     "format": "prettier --write '*.{ts,js,json}'"
   },
   "license": "UNLICENSED",

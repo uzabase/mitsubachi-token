@@ -1,0 +1,112 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { DesignTokenDocBlock } from "storybook-design-token/doc-blocks";
+import { presenters } from "./presenters";
+
+<Meta title="Color/Semantic" />
+
+# Color / Semantic
+
+用途で名付けられた色トークン。**アプリケーションからはこちらを参照してください。**
+
+## primitive との関係
+
+semantic は色を直接持たず、**primitive を参照しています。** Figma 上でも semantic 変数は
+primitive 変数へのエイリアスとして定義されていて、その構造をそのまま出力しています。
+
+```css
+--color-semantic-zabuton-semi-strong: var(--color-primitive-neutral-5);
+```
+
+下の表の **Alias** 列に、それぞれがどの primitive を指しているかが出ます。色見本は参照を
+解決した実際の色です。
+
+この構造のおかげで、**primitive を上書きすれば semantic 全体が追従します。**
+
+```css
+:root {
+  --color-primitive-white: #1d1d1d; /* semantic-zabuton-regular などが一斉に変わる */
+}
+```
+
+### 例外の 2 件（ダークモード用）
+
+`semantic-elevation-regular-inverse` と `semantic-elevation-semi-strong-inverse` の
+2 件だけは、Figma でもエイリアスではなく生値なので参照になっていません。
+
+**この 2 件は現在どちらも完全に透明（`#ffffff00`）です。** 今は実質的に何も描画しません。
+
+> **将来ライトモードとダークモードが搭載される予定で、この 2 件は
+> ダークモードのときだけ値がセットされる想定です。**
+> 現在の透明という値は「ライトモードでは使わない」という意味なので、
+> **透明であることを前提にした使い方をしないでください。**
+> ダークモードが入ると実際の色が入ります。
+
+---
+
+## surface
+
+面の色。ボタンやカードの背景など。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / surface" viewType="table" maxHeight={800} />
+
+## overlay
+
+重ねる半透明の色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / overlay" viewType="table" />
+
+## zabuton
+
+要素の下に敷く面の色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / zabuton" viewType="table" />
+
+## border
+
+枠線の色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / border" viewType="table" maxHeight={600} />
+
+## text
+
+文字色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / text" viewType="table" maxHeight={600} />
+
+## object
+
+アイコンなど、面でも文字でもない要素の色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / object" viewType="table" maxHeight={800} />
+
+## palette
+
+グラフやラベルなど、意味を持たせて色を出し分けるための色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / palette" viewType="table" maxHeight={600} />
+
+## background
+
+画面全体の背景色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / background" viewType="table" />
+
+## focus-ring
+
+フォーカス時のリングの色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / focus-ring" viewType="table" />
+
+## elevation
+
+影や立体表現に使う色。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Semantic / elevation" viewType="table" />
+
+## Other
+
+**ここに何か表示されている場合は、`tools/config.js` の `SEMANTIC_GROUPS` に無いグループが
+Figma に増えたということです。** グループを追加してこのページに節を足してください。
+空の場合は何も表示されません。
+
+<DesignTokenDocBlock presenters={presenters} categoryName="Other" viewType="table" />

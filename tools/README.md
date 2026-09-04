@@ -1,35 +1,13 @@
-# セットアップ
+# tools
 
-```bash
-npm install
-```
+Figma からデザイントークンを取得し、`lib/` 配下の各フォーマットを生成するスクリプト群。
 
-# Figmaファイル
+セットアップ・開発コマンド・環境変数は [`docs/contributing.md`](../docs/contributing.md) を参照。
+後方互換性チェック（`npm run check:compat`）の使い方は [`docs/versioning.md`](../docs/versioning.md) を参照。
 
-デザイントークンのFigmaファイル
-https://www.figma.com/file/3mt6U3oD9grrd7YzYm2cdu/
-
-上記のFigmaファイルを、自身のFigmaアカウントに複製（Duplicate to your draft）をしてください。
-
-# 実行方法
-
-
-## Style Dictionary用のJSONファイルを生成
-
-```bash
-$  npx tsc figma.ts && FIGMA_TOKEN=*** PRIMITIVE_FIGMA_DESIGN_FILE_KEY=*** SEMANTIC_FIGMA_DESIGN_FILE_KEY=*** node figma.js
-```
-npx tsc figma.tsでtsをjsにコンパイルします。 figma.jsが生成されていることを確認してください。  
-`FIGMA_TOKEN` にはFigmaアカウントの「Settings」にある「Personal access tokens」から取得して入れてください。  
-`PRIMITIVE_FIGMA_DESIGN_FILE_KEY`,`SEMANTIC_FIGMA_DESIGN_FILE_KEY`にはFigmaファイルのURLにある文字列を入れてください。
-
-```
-https://www.figma.com/file/%この部分の文字列%/
-```
-
-## CSSファイルの生成
-
-```bash
-# style-dictionary build
-$ npm run build:css
-```
+| ファイル | 役割 |
+| --- | --- |
+| `figma.ts` | Figma Variables API からトークンを取得して `tokens/color/base.json` を書き出す |
+| `config.js` | style-dictionary の設定。出力フォーマットとファイルヘッダを定義 |
+| `check-compat.ts` | 生成物を `origin/main` と比較し、後方互換性と必要なバージョン上げを判定する |
+| `tokens/` | style-dictionary の入力 JSON |
