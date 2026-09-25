@@ -41,7 +41,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet -- lib tools/tokens; then
+          if git diff --quiet -- lib tools/tokens storybook/tokens; then
             echo "exist=false" >> "$GITHUB_OUTPUT"
             echo "生成物に変化はありませんでした。" >> "$GITHUB_STEP_SUMMARY"
           else
@@ -68,7 +68,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add -A lib tools/tokens
+          git add -A lib tools/tokens storybook/tokens
           git commit -m "デザイントークンファイルを更新"
           git push origin "$BRANCH"
 
